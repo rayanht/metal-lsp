@@ -1,0 +1,115 @@
+{
+  "name": "metal-lsp",
+  "displayName": "Metal LSP",
+  "description": "Full language server features for Metal Shading Language — autocomplete, diagnostics, hover docs, go-to-definition",
+  "version": "1.0.0",
+  "publisher": "rayanhtt",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayanht/metal-lsp"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "metal",
+    "msl",
+    "shader",
+    "gpu",
+    "apple"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.metal"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "metal",
+        "extensions": [
+          ".metal"
+        ],
+        "aliases": [
+          "Metal",
+          "MSL",
+          "Metal Shading Language"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "metal",
+        "scopeName": "source.cpp.metal",
+        "path": "./syntaxes/metal.tmGrammar.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "metal-lsp.configure",
+        "title": "Metal LSP: Configure"
+      },
+      {
+        "command": "metal-lsp.showStatus",
+        "title": "Metal LSP: Show Status"
+      },
+      {
+        "command": "metal-lsp.restart",
+        "title": "Metal LSP: Restart Language Server"
+      },
+      {
+        "command": "metal-lsp.openDocs",
+        "title": "Metal LSP: Open Documentation"
+      }
+    ],
+    "configuration": {
+      "title": "Metal LSP",
+      "properties": {
+        "metal-lsp.compileDiagnostics": {
+          "type": "string",
+          "default": "off",
+          "enum": [
+            "off",
+            "onSave"
+          ],
+          "enumDescriptions": [
+            "Disabled — use clangd diagnostics only",
+            "Run xcrun metal on save for real Metal compiler diagnostics"
+          ],
+          "description": "Run xcrun metal for real compiler diagnostics (macOS only)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "compile:production": "node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "compile:tsc": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "pretest": "npm run compile:tsc",
+    "test": "node ./out/test/runTests.js",
+    "test:unit": "mocha ./out/test/unit/**/*.test.js",
+    "vscode:prepublish": "npm run compile:production",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.27.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  }
+}

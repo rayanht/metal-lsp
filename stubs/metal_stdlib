@@ -1,0 +1,19 @@
+#pragma once
+
+// Metal Standard Library — umbrella header
+// This mirrors the real <metal_stdlib> include that Metal shaders use.
+
+#include <metal_types.h>
+#include <metal_matrix.h>
+#include <metal_math.h>
+#include <metal_common.h>
+#include <metal_geometric.h>
+#include <metal_relational.h>
+#include <metal_integer.h>
+#include <metal_texture.h>
+#include <metal_sampler.h>
+#include <metal_atomic.h>
+#include <metal_compute.h>
+#include <metal_simdgroup.h>
+
+using namespace metal;

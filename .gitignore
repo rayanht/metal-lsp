@@ -1,0 +1,8 @@
+node_modules/
+out/
+dist/
+*.vsix
+.vscode-test/
+.clangd
+PRD.md
+SPEC.md

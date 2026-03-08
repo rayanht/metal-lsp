@@ -1,0 +1,210 @@
+{
+  "scopeName": "source.cpp.metal",
+  "name": "Metal",
+  "fileTypes": ["metal"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#preprocessor" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#attributes" },
+    { "include": "#metal-keywords" },
+    { "include": "#control-keywords" },
+    { "include": "#vector-matrix-types" },
+    { "include": "#metal-types" },
+    { "include": "#storage-types" },
+    { "include": "#operators" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.metal",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.metal",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor.metal",
+          "match": "^\\s*#\\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line)\\b.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.metal",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.metal",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.metal",
+          "match": "\\b0[xX][0-9a-fA-F]+[uUlLhHfF]*\\b"
+        },
+        {
+          "name": "constant.numeric.binary.metal",
+          "match": "\\b0[bB][01]+[uUlLhHfF]*\\b"
+        },
+        {
+          "name": "constant.numeric.float.metal",
+          "match": "\\b[0-9]+\\.[0-9]*([eE][+-]?[0-9]+)?[hHfF]?\\b"
+        },
+        {
+          "name": "constant.numeric.float.metal",
+          "match": "\\b[0-9]*\\.[0-9]+([eE][+-]?[0-9]+)?[hHfF]?\\b"
+        },
+        {
+          "name": "constant.numeric.float.metal",
+          "match": "\\b[0-9]+[eE][+-]?[0-9]+[hHfF]?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.metal",
+          "match": "\\b[0-9]+[uUlLhHfF]*\\b"
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "meta.attribute.metal",
+          "begin": "\\[\\[",
+          "end": "\\]\\]",
+          "patterns": [
+            {
+              "name": "entity.other.attribute-name.metal",
+              "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+            }
+          ]
+        }
+      ]
+    },
+    "metal-keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.metal",
+          "match": "\\b(kernel|vertex|fragment|mesh|object|device|constant|threadgroup|threadgroup_imageblock|ray_data|object_data|thread)\\b"
+        }
+      ]
+    },
+    "control-keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.c",
+          "match": "\\b(if|else|for|while|do|return|switch|case|default|break|continue|discard_fragment)\\b"
+        }
+      ]
+    },
+    "vector-matrix-types": {
+      "patterns": [
+        {
+          "name": "storage.type.vector.metal",
+          "match": "\\b(float|half|int|uint|short|ushort|char|uchar|bool|long|ulong)(2|3|4)\\b"
+        },
+        {
+          "name": "storage.type.matrix.metal",
+          "match": "\\b(float|half)(2x2|2x3|2x4|3x2|3x3|3x4|4x2|4x3|4x4)\\b"
+        }
+      ]
+    },
+    "metal-types": {
+      "patterns": [
+        {
+          "name": "storage.type.metal",
+          "match": "\\b(texture2d|texture3d|texture2d_array|texturecube|sampler|atomic_uint|atomic_int)\\b"
+        }
+      ]
+    },
+    "storage-types": {
+      "patterns": [
+        {
+          "name": "storage.type.c",
+          "match": "\\b(void|bool|int|uint|float|half|short|ushort|char|uchar|long|ulong|size_t|ptrdiff_t|struct|enum|class|typedef|using|namespace|static|inline|const|volatile|unsigned|signed)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "comment": "Compound assignment — must come before << >> < > = to avoid partial matches",
+          "name": "keyword.operator.assignment.compound.c",
+          "match": "<<=|>>=|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^="
+        },
+        {
+          "comment": "Increment/decrement and member access",
+          "name": "keyword.operator.increment-decrement.c",
+          "match": "\\+\\+|--"
+        },
+        {
+          "name": "keyword.operator.access.c",
+          "match": "->|::|\\."
+        },
+        {
+          "comment": "Shift — must come before < >",
+          "name": "keyword.operator.bitwise.shift.c",
+          "match": "<<|>>"
+        },
+        {
+          "comment": "Multi-char comparison — must come before < >",
+          "name": "keyword.operator.comparison.c",
+          "match": "<=|>=|==|!="
+        },
+        {
+          "comment": "Logical operators",
+          "name": "keyword.operator.logical.c",
+          "match": "&&|\\|\\||!"
+        },
+        {
+          "comment": "Single-char comparison — after all multi-char patterns",
+          "name": "keyword.operator.comparison.c",
+          "match": "[<>]"
+        },
+        {
+          "name": "keyword.operator.arithmetic.c",
+          "match": "[+\\-*/%]"
+        },
+        {
+          "name": "keyword.operator.bitwise.c",
+          "match": "[&|^~]"
+        },
+        {
+          "name": "keyword.operator.assignment.c",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.ternary.c",
+          "match": "[?:]"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.c",
+          "match": "[;,]"
+        },
+        {
+          "name": "punctuation.bracket.c",
+          "match": "[()\\[\\]{}]"
+        }
+      ]
+    }
+  }
+}
