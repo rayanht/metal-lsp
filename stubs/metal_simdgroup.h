@@ -108,8 +108,13 @@ uint simd_broadcast(uint value, ushort lane);
 // SIMD group ballot
 // ============================================================================
 
+/// SIMD group vote types
+namespace simd_vote {
+    typedef unsigned long long vote_t;
+}
+
 /// Return bitmask of lanes where predicate is true
-unsigned long long simd_ballot(bool predicate);
+simd_vote::vote_t simd_ballot(bool predicate);
 
 /// Return true if predicate is true for all active lanes
 bool simd_all(bool predicate);
@@ -153,13 +158,19 @@ void simdgroup_multiply_accumulate(
     simdgroup_matrix<T, M, N> C
 );
 
-/// Load simdgroup_matrix from device memory
+/// Load simdgroup_matrix from memory
 template <typename T, int R, int C>
 void simdgroup_load(simdgroup_matrix<T, R, C>& m, const T* src, ulong elements_per_row = 0, ulong2 matrix_origin = ulong2(0), bool transpose = false);
+/// Load simdgroup_matrix from device (volatile) memory
+template <typename T, int R, int C>
+void simdgroup_load(simdgroup_matrix<T, R, C>& m, const volatile T* src, ulong elements_per_row = 0, ulong2 matrix_origin = ulong2(0), bool transpose = false);
 
-/// Store simdgroup_matrix to device memory
+/// Store simdgroup_matrix to memory
 template <typename T, int R, int C>
 void simdgroup_store(simdgroup_matrix<T, R, C> m, T* dst, ulong elements_per_row = 0, ulong2 matrix_origin = ulong2(0), bool transpose = false);
+/// Store simdgroup_matrix to device (volatile) memory
+template <typename T, int R, int C>
+void simdgroup_store(simdgroup_matrix<T, R, C> m, volatile T* dst, ulong elements_per_row = 0, ulong2 matrix_origin = ulong2(0), bool transpose = false);
 
 /// Multiply two simdgroup matrices
 template <typename T, int M, int N, int K>
@@ -168,5 +179,19 @@ void simdgroup_multiply(simdgroup_matrix<T, M, N>& D, simdgroup_matrix<T, M, K> 
 /// Common simdgroup_matrix type aliases
 typedef simdgroup_matrix<float, 8, 8> simdgroup_float8x8;
 typedef simdgroup_matrix<half, 8, 8> simdgroup_half8x8;
+
+// ============================================================================
+// SIMD group async copy events
+// ============================================================================
+
+/// Event handle for asynchronous threadgroup-to-device copies
+struct simdgroup_event {
+    /// Asynchronously copy data from source to destination
+    template <typename T>
+    void async_copy(T* dst, const T* src, unsigned num_elements);
+
+    /// Wait for all async copies associated with this event to complete
+    void wait();
+};
 
 } // namespace metal

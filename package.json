@@ -2,7 +2,7 @@
   "name": "metal-lsp",
   "displayName": "Metal LSP",
   "description": "Full language server features for Metal Shading Language — autocomplete, diagnostics, hover docs, go-to-definition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "rayanhtt",
   "license": "MIT",
   "icon": "images/icon.png",

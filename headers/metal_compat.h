@@ -84,12 +84,10 @@
 
 // ============================================================================
 // Half-precision literal suffix
-// Metal uses 1.0h for half literals. Define a C++ user-defined literal.
+// Metal uses 1.0h for half literals. The operator""h definition lives in
+// stubs/metal_stdlib rather than here, because clangd's preamble PCH
+// serialization can lose UDL operators from force-included headers.
 // ============================================================================
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wuser-defined-literals"
-constexpr __fp16 operator""h(long double v) { return (__fp16)v; }
-#pragma clang diagnostic pop
 
 // ============================================================================
 // as_type<T> — Metal's bit-cast function

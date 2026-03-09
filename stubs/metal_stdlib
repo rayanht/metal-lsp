@@ -15,5 +15,18 @@
 #include <metal_atomic.h>
 #include <metal_compute.h>
 #include <metal_simdgroup.h>
+#include <metal_graphics.h>
+#include <metal_raytracing.h>
+#include <metal_mesh.h>
+#include <metal_imageblock.h>
+#include <metal_visible_function_table.h>
 
 using namespace metal;
+
+// Half-precision literal suffix: 1.0h → half
+// Defined here (not in compat header) to survive clangd preamble serialization.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wuser-defined-literals"
+#pragma clang diagnostic ignored "-Wreserved-user-defined-literal"
+constexpr metal::half operator""h(long double v) { return (metal::half)v; }
+#pragma clang diagnostic pop

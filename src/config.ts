@@ -16,6 +16,7 @@ export function generateMetalBlock(sdkInfo: SdkInfo): string {
     '    - -xc++',
     '    - -std=c++17',
     '    - -Wno-unknown-attributes',
+    '    - -Wno-reserved-user-defined-literal',
     '    - -include',
     `    - ${sdkInfo.compatHeaderPath}`,
     '    - -isystem',

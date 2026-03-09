@@ -22,7 +22,7 @@ Autocomplete, inline diagnostics, hover documentation, and go-to-definition for 
 
 ## Installation
 
-Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=rayanht.metal-lsp). The extension activates automatically when your workspace contains `.metal` files.
+Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=rayanhtt.metal-lsp). The extension activates automatically when your workspace contains `.metal` files.
 
 Also available on [Open VSX](https://open-vsx.org/) for VSCodium and other editors.
 

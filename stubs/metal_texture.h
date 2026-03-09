@@ -221,6 +221,25 @@ struct texture2d_ms {
 };
 
 // ============================================================================
+// texture2d_ms_array (multisample array)
+// ============================================================================
+
+/// Multisample 2D array texture
+template <typename T, access A = access::sample>
+struct texture2d_ms_array {
+    /// Read a texel at the given coordinates, array index, and sample
+    T read(uint2 coord, uint array, uint sample) const;
+    /// Get the texture width
+    uint get_width() const;
+    /// Get the texture height
+    uint get_height() const;
+    /// Get the number of array elements
+    uint get_array_size() const;
+    /// Get the number of samples per pixel
+    uint get_num_samples() const;
+};
+
+// ============================================================================
 // depth2d
 // ============================================================================
 

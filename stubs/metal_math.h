@@ -84,6 +84,8 @@ half log10(half x);
 
 /// Compute x raised to the power y
 template <typename T> T pow(T x, T y);
+/// Compute x raised to the power y (x must be >= 0)
+template <typename T> T powr(T x, T y);
 /// Compute x * 2^n efficiently
 template <typename T> T ldexp(T x, int n);
 /// Compute inverse square root (1/sqrt(x))
@@ -92,10 +94,12 @@ template <typename T> T rsqrt(T x);
 template <typename T> T sqrt(T x);
 
 float pow(float x, float y);
+float powr(float x, float y);
 float ldexp(float x, int n);
 float rsqrt(float x);
 float sqrt(float x);
 half pow(half x, half y);
+half powr(half x, half y);
 half rsqrt(half x);
 half sqrt(half x);
 

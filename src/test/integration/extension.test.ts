@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 suite('Metal LSP Extension', () => {
   test('extension is present', () => {
-    const ext = vscode.extensions.getExtension('rayanht.metal-lsp');
+    const ext = vscode.extensions.getExtension('rayanhtt.metal-lsp');
     assert.ok(ext);
   });
 

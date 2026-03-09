@@ -24,6 +24,9 @@ struct matrix {
     /// Default constructor
     matrix() = default;
 
+    /// Copy from volatile (needed for device→volatile mapping)
+    matrix(const volatile matrix& m) : columns{} { for (int i = 0; i < C; ++i) columns[i] = column_type(m.columns[i]); }
+
     /// Construct from scalar (fills diagonal)
     explicit matrix(T v);
 
@@ -48,6 +51,9 @@ struct matrix {
     /// Construct from individual elements (12 elements for 3x4 / 4x3)
     matrix(T m00, T m01, T m02, T m03, T m04, T m05, T m06, T m07,
            T m08, T m09, T m10, T m11);
+
+    /// Volatile-qualified assignment (for device pointer access)
+    volatile matrix& operator=(const matrix& m) volatile { for (int i = 0; i < C; ++i) columns[i] = m.columns[i]; return *this; }
 
     /// Access column by index
     column_type operator[](int i) const { return columns[i]; }
@@ -144,5 +150,17 @@ typedef matrix<half, 3, 4> half3x4;
 typedef matrix<half, 4, 2> half4x2;
 typedef matrix<half, 4, 3> half4x3;
 typedef matrix<half, 4, 4> half4x4;
+
+// ============================================================================
+// Matrix inverse
+// ============================================================================
+
+/// Compute the inverse of a square matrix
+float2x2 inverse(float2x2 m);
+float3x3 inverse(float3x3 m);
+float4x4 inverse(float4x4 m);
+half2x2 inverse(half2x2 m);
+half3x3 inverse(half3x3 m);
+half4x4 inverse(half4x4 m);
 
 } // namespace metal
