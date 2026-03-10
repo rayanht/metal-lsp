@@ -2,6 +2,42 @@
 
 All notable changes to the Metal LSP extension will be documented in this file.
 
+## [1.3.0] — 2026-03-10
+
+### Code Snippets
+
+7 tab-completable templates for common Metal patterns:
+
+- `kernel` — compute kernel with buffer binding and thread position
+- `vertex` — vertex function with output struct and `[[position]]`
+- `fragment` — fragment function with `[[stage_in]]`
+- `struct-vertex` — vertex input struct with `[[attribute(n)]]` bindings
+- `struct-varying` — vertex-to-fragment interpolation struct
+- `threadgroup-reduce` — full threadgroup parallel reduction pattern
+- `simdgroup-matmul` — simdgroup 8×8 matrix multiply-accumulate
+
+### Configurable Metal Standard Version
+
+New `metal-lsp.metalStdVersion` setting — choose `metal1.0` through `metal4.0` for compile-on-save diagnostics (default: `metal3.0`). Previously hardcoded to `metal3.0`.
+
+### Language Configuration
+
+- Auto-indent after `{`, outdent on `}`
+- Folding markers: `#pragma mark`, `// region` / `// endregion`
+- Block comment continuation: `* ` auto-inserted on Enter inside `/** */`
+- Improved word selection for identifiers
+
+### Claude Code Plugin
+
+Metal LSP is now available as a Claude Code plugin:
+
+```bash
+/plugin marketplace add rayanht/metal-lsp
+/plugin install metal-lsp@rayanht-metal-lsp
+```
+
+Provides clangd-powered diagnostics, hover docs, and go-to-definition for `.metal` files directly in Claude Code CLI sessions.
+
 ## [1.2.0] — 2026-03-10
 
 ### Extended Math Functions

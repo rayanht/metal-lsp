@@ -1,6 +1,6 @@
 # Metal LSP
 
-Full language server features for Metal Shading Language in VSCode and Cursor.
+Full language server features for Metal Shading Language in VSCode, Cursor, and Claude Code.
 
 Autocomplete, inline diagnostics, hover documentation, and go-to-definition for `.metal` files. Powered by clangd with Metal-aware headers.
 
@@ -22,9 +22,22 @@ Autocomplete, inline diagnostics, hover documentation, and go-to-definition for 
 
 ## Installation
 
+### VS Code / Cursor
+
 Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=rayanhtt.metal-lsp). The extension activates automatically when your workspace contains `.metal` files.
 
 Also available on [Open VSX](https://open-vsx.org/) for VSCodium and other editors.
+
+### Claude Code
+
+```bash
+/plugin marketplace add rayanht/metal-lsp
+/plugin install metal-lsp@rayanht-metal-lsp
+```
+
+Or for local development: `claude --plugin-dir /path/to/metal-lsp`
+
+Provides clangd-powered diagnostics, hover docs, and go-to-definition for `.metal` files directly in Claude Code CLI sessions. Requires `clangd` in PATH.
 
 ## How It Works
 
@@ -40,6 +53,7 @@ The extension configures clangd to understand Metal by:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
+| `metal-lsp.metalStdVersion` | `"metal3.0"` | Metal Shading Language standard version (`metal1.0` through `metal4.0`) for compile-on-save |
 | `metal-lsp.compileDiagnostics` | `"off"` | `"off"` or `"onSave"` — run `xcrun metal` for real compiler diagnostics (macOS only) |
 
 ## Commands

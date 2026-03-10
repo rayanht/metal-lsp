@@ -126,7 +126,7 @@ export class MetalCompiler implements vscode.Disposable {
       (resolve, reject) => {
         const proc = execFile(
           'xcrun',
-          ['metal', '-c', filePath, '-o', outputPath, '-std=metal3.0'],
+          ['metal', '-c', filePath, '-o', outputPath, `-std=${this.getMetalStdVersion()}`],
           { timeout: COMPILE_TIMEOUT_MS },
           (error, _stdout, stderr) => {
             this.inflight = null;
@@ -188,6 +188,12 @@ export class MetalCompiler implements vscode.Disposable {
     }
 
     return diagnostics;
+  }
+
+  private getMetalStdVersion(): string {
+    return vscode.workspace
+      .getConfiguration('metal-lsp')
+      .get<string>('metalStdVersion', 'metal3.0');
   }
 
   private cancelInflight(): void {

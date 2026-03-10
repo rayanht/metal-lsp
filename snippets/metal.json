@@ -1,0 +1,105 @@
+{
+  "Compute Kernel": {
+    "prefix": "kernel",
+    "body": [
+      "kernel void ${1:kernel_name}(",
+      "    device ${2:float}* ${3:output} [[buffer(0)]],",
+      "    ${4:uint tid [[thread_position_in_grid]]})",
+      "{",
+      "    $0",
+      "}"
+    ],
+    "description": "Metal compute kernel function"
+  },
+  "Vertex Function": {
+    "prefix": "vertex",
+    "body": [
+      "struct ${1:VertexOut} {",
+      "    float4 position [[position]];",
+      "    ${2:float2 texcoord;}",
+      "};",
+      "",
+      "vertex ${1:VertexOut} ${3:vertex_main}(",
+      "    ${4:uint vid [[vertex_id]]},",
+      "    device const ${5:float4}* vertices [[buffer(0)]])",
+      "{",
+      "    ${1:VertexOut} out;",
+      "    out.position = ${6:float4(vertices[vid].xyz, 1.0)};",
+      "    $0",
+      "    return out;",
+      "}"
+    ],
+    "description": "Metal vertex function with output struct"
+  },
+  "Fragment Function": {
+    "prefix": "fragment",
+    "body": [
+      "fragment float4 ${1:fragment_main}(",
+      "    ${2:VertexOut} in [[stage_in]])",
+      "{",
+      "    $0",
+      "    return float4(${3:1.0, 1.0, 1.0, 1.0});",
+      "}"
+    ],
+    "description": "Metal fragment function"
+  },
+  "Vertex Attribute Struct": {
+    "prefix": "struct-vertex",
+    "body": [
+      "struct ${1:VertexIn} {",
+      "    float3 position [[attribute(0)]];",
+      "    float3 normal [[attribute(1)]];",
+      "    float2 texcoord [[attribute(2)]];",
+      "    $0",
+      "};"
+    ],
+    "description": "Vertex input struct with attribute bindings"
+  },
+  "Varying Struct": {
+    "prefix": "struct-varying",
+    "body": [
+      "struct ${1:Varyings} {",
+      "    float4 position [[position]];",
+      "    float3 normal;",
+      "    float2 texcoord;",
+      "    $0",
+      "};"
+    ],
+    "description": "Vertex-to-fragment interpolation struct"
+  },
+  "Threadgroup Reduction": {
+    "prefix": "threadgroup-reduce",
+    "body": [
+      "// Threadgroup parallel reduction",
+      "threadgroup ${1:float} shared_data[${2:256}];",
+      "shared_data[${3:tid_in_tg}] = ${4:local_value};",
+      "threadgroup_barrier(mem_flags::mem_threadgroup);",
+      "",
+      "for (uint stride = ${2:256} / 2; stride > 0; stride /= 2) {",
+      "    if (${3:tid_in_tg} < stride) {",
+      "        shared_data[${3:tid_in_tg}] += shared_data[${3:tid_in_tg} + stride];",
+      "    }",
+      "    threadgroup_barrier(mem_flags::mem_threadgroup);",
+      "}",
+      "",
+      "if (${3:tid_in_tg} == 0) {",
+      "    ${5:output[tg_id]} = shared_data[0];",
+      "}",
+      "$0"
+    ],
+    "description": "Threadgroup parallel reduction pattern"
+  },
+  "Simdgroup Matrix Multiply": {
+    "prefix": "simdgroup-matmul",
+    "body": [
+      "// Simdgroup matrix multiply-accumulate",
+      "simdgroup_matrix<${1:float}, 8, 8> A, B, C;",
+      "simdgroup_load(A, ${2:a_ptr}, ${3:K});",
+      "simdgroup_load(B, ${4:b_ptr}, ${5:N});",
+      "simdgroup_multiply_accumulate(C, A, B, C);",
+      "simdgroup_store(C, ${6:c_ptr}, ${7:N});",
+      "$0"
+    ],
+    "description": "Simdgroup 8x8 matrix multiply-accumulate pattern"
+  }
+}

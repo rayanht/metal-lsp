@@ -2,7 +2,7 @@
   "name": "metal-lsp",
   "displayName": "Metal LSP",
   "description": "Full language server features for Metal Shading Language — autocomplete, diagnostics, hover docs, go-to-definition",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "rayanhtt",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -49,6 +49,12 @@
         "path": "./syntaxes/metal.tmGrammar.json"
       }
     ],
+    "snippets": [
+      {
+        "language": "metal",
+        "path": "./snippets/metal.json"
+      }
+    ],
     "commands": [
       {
         "command": "metal-lsp.configure",
@@ -70,6 +76,25 @@
     "configuration": {
       "title": "Metal LSP",
       "properties": {
+        "metal-lsp.metalStdVersion": {
+          "type": "string",
+          "default": "metal3.0",
+          "enum": [
+            "metal1.0",
+            "metal1.1",
+            "metal1.2",
+            "metal2.0",
+            "metal2.1",
+            "metal2.2",
+            "metal2.3",
+            "metal2.4",
+            "metal3.0",
+            "metal3.1",
+            "metal3.2",
+            "metal4.0"
+          ],
+          "description": "Metal Shading Language standard version for compile-on-save diagnostics"
+        },
         "metal-lsp.compileDiagnostics": {
           "type": "string",
           "default": "off",

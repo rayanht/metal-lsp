@@ -1,0 +1,13 @@
+{
+  "name": "metal-lsp",
+  "owner": {
+    "name": "Rayan Hatout"
+  },
+  "plugins": [
+    {
+      "name": "metal-lsp",
+      "source": "./",
+      "description": "Metal Shading Language support — diagnostics, go-to-definition, and hover docs for .metal files via clangd"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "metal": {
+    "command": "clangd",
+    "args": [
+      "--log=error",
+      "--background-index",
+      "--clang-tidy=false"
+    ],
+    "extensionToLanguage": {
+      ".metal": "cpp"
+    }
+  }
+}

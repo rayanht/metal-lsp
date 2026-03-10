@@ -1,0 +1,10 @@
+{
+  "name": "metal-lsp",
+  "description": "Metal Shading Language support — diagnostics, go-to-definition, and hover docs for .metal files via clangd",
+  "version": "1.3.0",
+  "author": {
+    "name": "Rayan Hatout"
+  },
+  "repository": "https://github.com/rayanht/metal-lsp",
+  "license": "MIT"
+}
