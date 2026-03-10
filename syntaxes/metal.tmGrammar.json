@@ -10,6 +10,7 @@
     { "include": "#attributes" },
     { "include": "#metal-keywords" },
     { "include": "#control-keywords" },
+    { "include": "#metal-builtin-functions" },
     { "include": "#vector-matrix-types" },
     { "include": "#metal-types" },
     { "include": "#storage-types" },
@@ -34,7 +35,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor.metal",
-          "match": "^\\s*#\\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line)\\b.*$"
+          "match": "^\\s*#\\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line|import)\\b.*$"
         }
       ]
     },
@@ -99,8 +100,14 @@
     "metal-keywords": {
       "patterns": [
         {
-          "name": "keyword.other.metal",
-          "match": "\\b(kernel|vertex|fragment|mesh|object|device|constant|threadgroup|threadgroup_imageblock|ray_data|object_data|thread)\\b"
+          "comment": "Shader stage qualifiers",
+          "name": "keyword.other.stage.metal",
+          "match": "\\b(kernel|vertex|fragment|mesh|object)\\b"
+        },
+        {
+          "comment": "Address space qualifiers",
+          "name": "keyword.other.address-space.metal",
+          "match": "\\b(device|constant|threadgroup|threadgroup_imageblock|ray_data|object_data|thread)\\b"
         }
       ]
     },
@@ -108,7 +115,81 @@
       "patterns": [
         {
           "name": "keyword.control.c",
-          "match": "\\b(if|else|for|while|do|return|switch|case|default|break|continue|discard_fragment)\\b"
+          "match": "\\b(if|else|for|while|do|return|switch|case|default|break|continue|discard_fragment|template|typename)\\b"
+        }
+      ]
+    },
+    "metal-builtin-functions": {
+      "patterns": [
+        {
+          "comment": "Synchronization and barriers",
+          "name": "support.function.sync.metal",
+          "match": "\\b(threadgroup_barrier|simdgroup_barrier|threadgroup_mem_fence|device_mem_fence)\\b"
+        },
+        {
+          "comment": "SIMD group operations",
+          "name": "support.function.simd.metal",
+          "match": "\\b(simd_sum|simd_product|simd_min|simd_max|simd_and|simd_or|simd_xor|simd_prefix_exclusive_sum|simd_prefix_inclusive_sum|simd_prefix_exclusive_product|simd_prefix_inclusive_product|simd_shuffle|simd_shuffle_up|simd_shuffle_down|simd_shuffle_xor|simd_broadcast|simd_ballot|simd_all|simd_any|simd_is_first|simd_active_threads_mask)\\b"
+        },
+        {
+          "comment": "SIMD group matrix operations",
+          "name": "support.function.simd-matrix.metal",
+          "match": "\\b(simdgroup_load|simdgroup_store|simdgroup_multiply|simdgroup_multiply_accumulate)\\b"
+        },
+        {
+          "comment": "Quad group operations",
+          "name": "support.function.quad.metal",
+          "match": "\\b(quad_sum|quad_product|quad_min|quad_max|quad_and|quad_or|quad_xor|quad_shuffle|quad_shuffle_up|quad_shuffle_down|quad_shuffle_xor|quad_broadcast)\\b"
+        },
+        {
+          "comment": "Math functions",
+          "name": "support.function.math.metal",
+          "match": "\\b(abs|acos|acospi|asin|asinpi|atan|atan2|atan2pi|atanpi|cbrt|ceil|clamp|copysign|cos|cosh|cospi|degrees|erf|erfc|exp|exp2|exp10|expm1|fabs|fdim|floor|fma|fmax|fmin|fmod|fract|frexp|hypot|isinf|isnan|isfinite|isnormal|ldexp|lgamma|log|log2|log10|log1p|max|min|mix|modf|pow|powr|pown|radians|remainder|rint|rootn|round|rsqrt|saturate|sign|sin|sincos|sinh|sinpi|smoothstep|sqrt|step|tan|tanh|tanpi|tgamma|trunc)\\b"
+        },
+        {
+          "comment": "Geometric functions",
+          "name": "support.function.geometric.metal",
+          "match": "\\b(cross|distance|distance_squared|dot|faceforward|length|length_squared|normalize|reflect|refract)\\b"
+        },
+        {
+          "comment": "Relational functions",
+          "name": "support.function.relational.metal",
+          "match": "\\b(all|any|isfinite|isinf|isnan|isnormal|isunordered|select)\\b"
+        },
+        {
+          "comment": "Integer functions",
+          "name": "support.function.integer.metal",
+          "match": "\\b(clz|ctz|popcount|reverse_bits|rotate|extract_bits|insert_bits|mulhi|add_sat|sub_sat|abs_diff|hadd|rhadd|mad_hi|mad_sat)\\b"
+        },
+        {
+          "comment": "Derivative functions",
+          "name": "support.function.derivative.metal",
+          "match": "\\b(dfdx|dfdy|fwidth|dfdx_coarse|dfdy_coarse|fwidth_coarse|dfdx_fine|dfdy_fine|fwidth_fine)\\b"
+        },
+        {
+          "comment": "Interpolation functions",
+          "name": "support.function.interpolation.metal",
+          "match": "\\b(interpolate_at_center|interpolate_at_centroid|interpolate_at_sample|interpolate_at_offset)\\b"
+        },
+        {
+          "comment": "Render target and fragment functions",
+          "name": "support.function.render-target.metal",
+          "match": "\\b(render_target_read|render_target_write|get_render_target_sample_count|get_fragment_size|get_num_color_attachments|is_front_face|discard_fragment)\\b"
+        },
+        {
+          "comment": "Data packing/unpacking functions",
+          "name": "support.function.packing.metal",
+          "match": "\\b(pack_float_to_snorm2x16|pack_float_to_snorm4x8|pack_float_to_unorm2x16|pack_float_to_unorm4x8|unpack_snorm2x16_to_float|unpack_snorm4x8_to_float|unpack_unorm2x16_to_float|unpack_unorm4x8_to_float|pack_float_to_snorm_short|pack_float_to_unorm_ushort|pack_float_to_snorm_char|pack_float_to_unorm_uchar|unpack_snorm_short_to_float|unpack_unorm_ushort_to_float|unpack_snorm_char_to_float|unpack_unorm_uchar_to_float)\\b"
+        },
+        {
+          "comment": "Atomic operations",
+          "name": "support.function.atomic.metal",
+          "match": "\\b(atomic_store_explicit|atomic_load_explicit|atomic_exchange_explicit|atomic_compare_exchange_weak_explicit|atomic_fetch_add_explicit|atomic_fetch_sub_explicit|atomic_fetch_and_explicit|atomic_fetch_or_explicit|atomic_fetch_xor_explicit|atomic_fetch_min_explicit|atomic_fetch_max_explicit)\\b"
+        },
+        {
+          "comment": "Type cast functions",
+          "name": "support.function.cast.metal",
+          "match": "\\b(as_type|static_cast|reinterpret_cast|const_cast)\\b"
         }
       ]
     },
@@ -121,14 +202,80 @@
         {
           "name": "storage.type.matrix.metal",
           "match": "\\b(float|half)(2x2|2x3|2x4|3x2|3x3|3x4|4x2|4x3|4x4)\\b"
+        },
+        {
+          "comment": "Packed vector types",
+          "name": "storage.type.packed.metal",
+          "match": "\\b(packed_float2|packed_float3|packed_float4|packed_half2|packed_half3|packed_half4|packed_int2|packed_int3|packed_int4|packed_uint2|packed_uint3|packed_uint4|packed_short2|packed_short3|packed_short4|packed_ushort2|packed_ushort3|packed_ushort4|packed_char2|packed_char3|packed_char4|packed_uchar2|packed_uchar3|packed_uchar4)\\b"
         }
       ]
     },
     "metal-types": {
       "patterns": [
         {
-          "name": "storage.type.metal",
-          "match": "\\b(texture2d|texture3d|texture2d_array|texturecube|sampler|atomic_uint|atomic_int)\\b"
+          "comment": "Texture types — 1D",
+          "name": "storage.type.texture.metal",
+          "match": "\\b(texture1d|texture1d_array)\\b"
+        },
+        {
+          "comment": "Texture types — 2D",
+          "name": "storage.type.texture.metal",
+          "match": "\\b(texture2d|texture2d_array|texture2d_ms|texture2d_ms_array)\\b"
+        },
+        {
+          "comment": "Texture types — 3D and cube",
+          "name": "storage.type.texture.metal",
+          "match": "\\b(texture3d|texturecube|texturecube_array)\\b"
+        },
+        {
+          "comment": "Depth texture types",
+          "name": "storage.type.texture.metal",
+          "match": "\\b(depth2d|depth2d_array|depth2d_ms|depth2d_ms_array|depthcube|depthcube_array)\\b"
+        },
+        {
+          "comment": "Texture buffer",
+          "name": "storage.type.texture.metal",
+          "match": "\\b(texture_buffer)\\b"
+        },
+        {
+          "comment": "Sampler type",
+          "name": "storage.type.sampler.metal",
+          "match": "\\b(sampler|constexpr_sampler)\\b"
+        },
+        {
+          "comment": "Atomic types",
+          "name": "storage.type.atomic.metal",
+          "match": "\\b(atomic_uint|atomic_int|atomic_bool|atomic_float|atomic)\\b"
+        },
+        {
+          "comment": "SIMD group types",
+          "name": "storage.type.simd.metal",
+          "match": "\\b(simdgroup_matrix|simdgroup_event)\\b"
+        },
+        {
+          "comment": "Ray tracing types",
+          "name": "storage.type.raytracing.metal",
+          "match": "\\b(ray|intersector|intersection_result|intersection_function_table|primitive_acceleration_structure|instance_acceleration_structure|visible_function_table)\\b"
+        },
+        {
+          "comment": "Mesh shader types",
+          "name": "storage.type.mesh.metal",
+          "match": "\\b(mesh_grid_properties|topology)\\b"
+        },
+        {
+          "comment": "Imageblock types",
+          "name": "storage.type.imageblock.metal",
+          "match": "\\b(imageblock|imageblock_slice)\\b"
+        },
+        {
+          "comment": "Memory order and access enums",
+          "name": "storage.type.enum.metal",
+          "match": "\\b(memory_order|memory_order_relaxed|mem_flags|mem_none|mem_device|mem_threadgroup|mem_texture|mem_device_and_threadgroup|access)\\b"
+        },
+        {
+          "comment": "Sampler enums",
+          "name": "storage.type.enum.metal",
+          "match": "\\b(filter|min_filter|mag_filter|mip_filter|address|coord|compare_func|border_color)\\b"
         }
       ]
     },
@@ -136,7 +283,7 @@
       "patterns": [
         {
           "name": "storage.type.c",
-          "match": "\\b(void|bool|int|uint|float|half|short|ushort|char|uchar|long|ulong|size_t|ptrdiff_t|struct|enum|class|typedef|using|namespace|static|inline|const|volatile|unsigned|signed)\\b"
+          "match": "\\b(void|bool|int|uint|float|half|short|ushort|char|uchar|long|ulong|size_t|ptrdiff_t|struct|enum|class|typedef|using|namespace|static|inline|const|volatile|unsigned|signed|constexpr|auto|nullptr)\\b"
         }
       ]
     },

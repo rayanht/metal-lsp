@@ -2,6 +2,49 @@
 
 All notable changes to the Metal LSP extension will be documented in this file.
 
+## [1.2.0] — 2026-03-10
+
+### Extended Math Functions
+
+- **Pi-multiplied trig** — `sinpi`, `cospi`, `tanpi`, `acospi`, `asinpi`, `atanpi`, `atan2pi`
+- **Additional exp/log** — `exp10`, `expm1`, `log1p`
+- **Power/root** — `cbrt`, `hypot`, `pown`, `rootn`
+- **Remainder/rounding** — `remainder`, `rint`, `copysign`, `fdim`
+- **Gamma/error** — `lgamma`, `tgamma`, `erf`, `erfc`
+- All with float, half, and vector overloads
+
+### Data Packing/Unpacking
+
+Full suite of normalized integer packing functions:
+
+- `pack_float_to_snorm2x16` / `unpack_snorm2x16_to_float` (and unorm variants)
+- `pack_float_to_snorm4x8` / `unpack_snorm4x8_to_float` (and unorm variants)
+- Per-component: `pack_float_to_snorm_short`, `pack_float_to_unorm_ushort`, `pack_float_to_snorm_char`, `pack_float_to_unorm_uchar` (and unpacking counterparts)
+- Half-precision variants of all packing functions
+
+### Render Target Functions
+
+- `render_target_read<T>` / `render_target_write<T>` — tile-based deferred rendering
+- `get_render_target_sample_count` — MSAA sample count query
+- `get_fragment_size` — variable rasterization rate support
+- `get_num_color_attachments`, `is_front_face`
+
+### Volatile Compound Assignment
+
+- Added volatile-qualified `+=`, `-=`, `*=`, `/=` operators on `vec2`, `vec3`, `vec4` — fixes `output[tid] += ...` through device pointers
+
+### TextMate Grammar Expansion
+
+Major expansion of syntax highlighting coverage:
+
+- **Built-in functions** — 100+ Metal stdlib functions now highlighted (math, geometric, SIMD, quad, atomic, derivative, interpolation, packing, render target)
+- **All texture types** — `texture1d`, `texture1d_array`, `texture2d_ms`, `texture2d_ms_array`, `texture3d`, `texturecube`, `texturecube_array`, depth variants, `texture_buffer`
+- **Packed vector types** — `packed_float3`, `packed_half4`, etc.
+- **Ray tracing types** — `ray`, `intersector`, `intersection_result`, acceleration structures
+- **Mesh/imageblock types** — `mesh_grid_properties`, `imageblock`, `imageblock_slice`
+- **SIMD types** — `simdgroup_matrix`, `simdgroup_event`
+- **Enum types** — `memory_order`, `mem_flags`, `access`, sampler enums
+
 ## [1.1.0] — 2026-03-09
 
 ### Stub Expansion

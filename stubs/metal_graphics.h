@@ -156,4 +156,40 @@ half4 interpolate_at_offset(half4 x, float2 offset);
 /// Discard the current fragment
 void discard_fragment();
 
+// ============================================================================
+// Render target functions — tile-based deferred rendering
+// ============================================================================
+
+/// Read color attachment at given index for the current fragment position
+template <typename T>
+T render_target_read(uint color_attachment_index);
+
+/// Read color attachment at given sample index (MSAA)
+template <typename T>
+T render_target_read(uint color_attachment_index, uint sample_index);
+
+/// Write to color attachment at given index for the current fragment position
+template <typename T>
+void render_target_write(T value, uint color_attachment_index);
+
+/// Write to color attachment at given sample index (MSAA)
+template <typename T>
+void render_target_write(T value, uint color_attachment_index, uint sample_index);
+
+/// Return the number of samples for the render target
+uint get_render_target_sample_count();
+
+/// Return the fragment size in pixels (used for variable rasterization rate)
+ushort2 get_fragment_size();
+
+/// Return the number of color attachments
+uint get_num_color_attachments();
+
+// ============================================================================
+// Fragment position and front-facing
+// ============================================================================
+
+/// Return true if the current fragment is front-facing
+bool is_front_face();
+
 } // namespace metal

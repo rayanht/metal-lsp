@@ -133,6 +133,15 @@ struct vec2 {
     vec2& operator-=(T b) { x-=b; y-=b; return *this; }
     vec2& operator*=(T b) { x*=b; y*=b; return *this; }
     vec2& operator/=(T b) { x/=b; y/=b; return *this; }
+    // Volatile compound assignment (for device pointer access)
+    volatile vec2& operator+=(vec2 b) volatile { x+=b.x; y+=b.y; return *this; }
+    volatile vec2& operator-=(vec2 b) volatile { x-=b.x; y-=b.y; return *this; }
+    volatile vec2& operator*=(vec2 b) volatile { x*=b.x; y*=b.y; return *this; }
+    volatile vec2& operator/=(vec2 b) volatile { x/=b.x; y/=b.y; return *this; }
+    volatile vec2& operator+=(T b) volatile { x+=b; y+=b; return *this; }
+    volatile vec2& operator-=(T b) volatile { x-=b; y-=b; return *this; }
+    volatile vec2& operator*=(T b) volatile { x*=b; y*=b; return *this; }
+    volatile vec2& operator/=(T b) volatile { x/=b; y/=b; return *this; }
     vec2 operator-() const { return {T(-x), T(-y)}; }
     bool operator==(vec2 b) const { return x==b.x && y==b.y; }
     bool operator!=(vec2 b) const { return x!=b.x || y!=b.y; }
@@ -232,6 +241,15 @@ struct vec3 {
     vec3& operator-=(T b) { x-=b; y-=b; z-=b; return *this; }
     vec3& operator*=(T b) { x*=b; y*=b; z*=b; return *this; }
     vec3& operator/=(T b) { x/=b; y/=b; z/=b; return *this; }
+    // Volatile compound assignment (for device pointer access)
+    volatile vec3& operator+=(vec3 b) volatile { x+=b.x; y+=b.y; z+=b.z; return *this; }
+    volatile vec3& operator-=(vec3 b) volatile { x-=b.x; y-=b.y; z-=b.z; return *this; }
+    volatile vec3& operator*=(vec3 b) volatile { x*=b.x; y*=b.y; z*=b.z; return *this; }
+    volatile vec3& operator/=(vec3 b) volatile { x/=b.x; y/=b.y; z/=b.z; return *this; }
+    volatile vec3& operator+=(T b) volatile { x+=b; y+=b; z+=b; return *this; }
+    volatile vec3& operator-=(T b) volatile { x-=b; y-=b; z-=b; return *this; }
+    volatile vec3& operator*=(T b) volatile { x*=b; y*=b; z*=b; return *this; }
+    volatile vec3& operator/=(T b) volatile { x/=b; y/=b; z/=b; return *this; }
     vec3 operator-() const { return {T(-x), T(-y), T(-z)}; }
     bool operator==(vec3 b) const { return x==b.x && y==b.y && z==b.z; }
     bool operator!=(vec3 b) const { return !(*this == b); }
@@ -345,6 +363,15 @@ struct vec4 {
     vec4& operator-=(T b) { x-=b; y-=b; z-=b; w-=b; return *this; }
     vec4& operator*=(T b) { x*=b; y*=b; z*=b; w*=b; return *this; }
     vec4& operator/=(T b) { x/=b; y/=b; z/=b; w/=b; return *this; }
+    // Volatile compound assignment (for device pointer access)
+    volatile vec4& operator+=(vec4 b) volatile { x+=b.x; y+=b.y; z+=b.z; w+=b.w; return *this; }
+    volatile vec4& operator-=(vec4 b) volatile { x-=b.x; y-=b.y; z-=b.z; w-=b.w; return *this; }
+    volatile vec4& operator*=(vec4 b) volatile { x*=b.x; y*=b.y; z*=b.z; w*=b.w; return *this; }
+    volatile vec4& operator/=(vec4 b) volatile { x/=b.x; y/=b.y; z/=b.z; w/=b.w; return *this; }
+    volatile vec4& operator+=(T b) volatile { x+=b; y+=b; z+=b; w+=b; return *this; }
+    volatile vec4& operator-=(T b) volatile { x-=b; y-=b; z-=b; w-=b; return *this; }
+    volatile vec4& operator*=(T b) volatile { x*=b; y*=b; z*=b; w*=b; return *this; }
+    volatile vec4& operator/=(T b) volatile { x/=b; y/=b; z/=b; w/=b; return *this; }
     vec4 operator-() const { return {T(-x), T(-y), T(-z), T(-w)}; }
     bool operator==(vec4 b) const { return x==b.x && y==b.y && z==b.z && w==b.w; }
     bool operator!=(vec4 b) const { return !(*this == b); }

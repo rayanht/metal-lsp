@@ -93,7 +93,7 @@
 // as_type<T> — Metal's bit-cast function
 // ============================================================================
 template <typename T, typename U>
-T as_type(U x) { return *reinterpret_cast<const T*>(&x); }
+T as_type(U x) { T r; __builtin_memcpy(&r, &x, sizeof(T)); return r; }
 
 // ============================================================================
 // select — ternary select function
