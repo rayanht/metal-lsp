@@ -22,3 +22,7 @@ PRD.md
 SPEC.md
 CHANGELOG.md
 test-workspace/**
+.claude-plugin/**
+hooks/**
+scripts/**
+.lsp.json

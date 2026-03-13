@@ -5,7 +5,16 @@ import { SdkInfo } from './sdk';
 export const MARKER_BEGIN = '# --- metal-lsp:begin ---';
 export const MARKER_END = '# --- metal-lsp:end ---';
 
-export function generateMetalBlock(sdkInfo: SdkInfo): string {
+export interface ExtraFlags {
+  workspaceRoot?: string;
+  includePaths?: string[];
+  compileFlags?: string[];
+}
+
+export function generateMetalBlock(
+  sdkInfo: SdkInfo,
+  extra?: ExtraFlags
+): string {
   const lines = [
     MARKER_BEGIN,
     'If:',
@@ -21,8 +30,24 @@ export function generateMetalBlock(sdkInfo: SdkInfo): string {
     `    - ${sdkInfo.compatHeaderPath}`,
     '    - -isystem',
     `    - ${sdkInfo.headersPath}`,
-    MARKER_END,
+    '    - -I',
+    `    - ${extra?.workspaceRoot ?? '.'}`,
   ];
+
+  if (extra?.includePaths) {
+    for (const p of extra.includePaths) {
+      lines.push('    - -isystem');
+      lines.push(`    - ${p}`);
+    }
+  }
+
+  if (extra?.compileFlags) {
+    for (const flag of extra.compileFlags) {
+      lines.push(`    - ${flag}`);
+    }
+  }
+
+  lines.push(MARKER_END);
   return lines.join('\n');
 }
 
@@ -53,7 +78,8 @@ function removeMarkerBlock(content: string): string {
 
 export async function updateClangdConfig(
   folderPath: string,
-  sdkInfo: SdkInfo
+  sdkInfo: SdkInfo,
+  extra?: ExtraFlags
 ): Promise<'created' | 'updated' | 'skipped'> {
   const clangdPath = path.join(folderPath, '.clangd');
   let content = '';
@@ -68,7 +94,7 @@ export async function updateClangdConfig(
     return 'skipped';
   }
 
-  const newBlock = generateMetalBlock(sdkInfo);
+  const newBlock = generateMetalBlock(sdkInfo, extra);
 
   const beginIdx = content.indexOf(MARKER_BEGIN);
   const endIdx = content.indexOf(MARKER_END);

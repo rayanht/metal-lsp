@@ -22,7 +22,11 @@
       "patterns": [
         {
           "name": "comment.line.double-slash.metal",
-          "match": "//.*$"
+          "begin": "//",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.metal" }
+          },
+          "end": "$"
         },
         {
           "name": "comment.block.metal",
@@ -34,8 +38,30 @@
     "preprocessor": {
       "patterns": [
         {
-          "name": "meta.preprocessor.metal",
-          "match": "^\\s*#\\s*(include|define|undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line|import)\\b.*$"
+          "comment": "Preprocessor include",
+          "match": "^\\s*((#)\\s*include)\\b\\s*(.*)",
+          "captures": {
+            "1": { "name": "keyword.control.directive.include.c" },
+            "2": { "name": "punctuation.definition.directive.c" },
+            "3": { "name": "string.quoted.other.include.c" }
+          }
+        },
+        {
+          "comment": "Preprocessor define",
+          "match": "^\\s*((#)\\s*define)\\b\\s+([a-zA-Z_]\\w*)",
+          "captures": {
+            "1": { "name": "keyword.control.directive.define.c" },
+            "2": { "name": "punctuation.definition.directive.c" },
+            "3": { "name": "entity.name.function.preprocessor.c" }
+          }
+        },
+        {
+          "comment": "Preprocessor conditionals and other directives",
+          "match": "^\\s*((#)\\s*(undef|ifdef|ifndef|if|else|elif|endif|pragma|error|line|import))\\b",
+          "captures": {
+            "1": { "name": "keyword.control.directive.c" },
+            "2": { "name": "punctuation.definition.directive.c" }
+          }
         }
       ]
     },

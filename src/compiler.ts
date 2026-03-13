@@ -122,11 +122,28 @@ export class MetalCompiler implements vscode.Disposable {
     const hash = crypto.createHash('md5').update(filePath).digest('hex');
     const outputPath = path.join('/tmp', `metal-lsp-${hash}.air`);
 
+    const config = vscode.workspace.getConfiguration('metal-lsp');
+    const includePaths = config.get<string[]>('includePaths', []);
+    const compileFlags = config.get<string[]>('compileFlags', []);
+
+    const args = ['metal', '-c', filePath, '-o', outputPath, `-std=${this.getMetalStdVersion()}`];
+
+    // Add workspace root as -I so relative includes resolve
+    const folder = vscode.workspace.getWorkspaceFolder(uri);
+    if (folder) {
+      args.push('-I', folder.uri.fsPath);
+    }
+
+    for (const p of includePaths) {
+      args.push('-isystem', p);
+    }
+    args.push(...compileFlags);
+
     const diagnostics = await new Promise<vscode.Diagnostic[]>(
       (resolve, reject) => {
         const proc = execFile(
           'xcrun',
-          ['metal', '-c', filePath, '-o', outputPath, `-std=${this.getMetalStdVersion()}`],
+          args,
           { timeout: COMPILE_TIMEOUT_MS },
           (error, _stdout, stderr) => {
             this.inflight = null;

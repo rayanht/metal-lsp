@@ -80,6 +80,8 @@ CompileFlags:
     - ${COMPAT_HEADER}
     - -isystem
     - ${HEADERS_PATH}
+    - -I
+    - $(pwd)
 ${MARKER_END}"
 
 # Write block to a temp file for sed replacement

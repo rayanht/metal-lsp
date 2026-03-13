@@ -55,6 +55,10 @@ The extension configures clangd to understand Metal by:
 |---------|---------|-------------|
 | `metal-lsp.metalStdVersion` | `"metal3.0"` | Metal Shading Language standard version (`metal1.0` through `metal4.0`) for compile-on-save |
 | `metal-lsp.compileDiagnostics` | `"off"` | `"off"` or `"onSave"` — run `xcrun metal` for real compiler diagnostics (macOS only) |
+| `metal-lsp.includePaths` | `[]` | Additional include directories for Metal shader compilation (added as `-isystem` paths) |
+| `metal-lsp.compileFlags` | `[]` | Additional compile flags passed to both clangd and the Metal compiler |
+
+The workspace root is automatically added as an include path, so `#include "shared/types.h"` works out of the box if `shared/` is at your project root. The `includePaths` setting is only needed for directories outside your workspace.
 
 ## Commands
 

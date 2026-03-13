@@ -2,7 +2,7 @@
   "name": "metal-lsp",
   "displayName": "Metal LSP",
   "description": "Full language server features for Metal Shading Language — autocomplete, diagnostics, hover docs, go-to-definition",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "rayanhtt",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -76,6 +76,18 @@
     "configuration": {
       "title": "Metal LSP",
       "properties": {
+        "metal-lsp.includePaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional include directories for Metal shader compilation (added as -isystem paths)"
+        },
+        "metal-lsp.compileFlags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional compile flags passed to both clangd and the Metal compiler"
+        },
         "metal-lsp.metalStdVersion": {
           "type": "string",
           "default": "metal3.0",

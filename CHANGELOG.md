@@ -2,6 +2,24 @@
 
 All notable changes to the Metal LSP extension will be documented in this file.
 
+## [1.4.0] — 2026-03-13
+
+### Multi-File Shader Projects
+
+The workspace root is now automatically added as an include path (`-I`), so `#include "shared/types.h"` resolves out of the box when `shared/` is at your project root. No configuration needed.
+
+### Additional Extension Settings
+
+- `metal-lsp.includePaths` — extra include directories (added as `-isystem` paths to both clangd and `xcrun metal`)
+- `metal-lsp.compileFlags` — extra compile flags passed to both clangd and the Metal compiler
+
+Changing either setting automatically regenerates the `.clangd` config and restarts clangd.
+
+### Housekeeping
+
+- Claude Code plugin files (`.claude-plugin/`, `hooks/`, `scripts/`, `.lsp.json`) excluded from VS Code extension package
+- Show Status command now displays configured include paths and compile flags
+
 ## [1.3.0] — 2026-03-10
 
 ### Code Snippets

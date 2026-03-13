@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { detectSdk, SdkInfo } from './sdk';
-import { updateClangdConfig, MARKER_BEGIN } from './config';
+import { updateClangdConfig, ExtraFlags, MARKER_BEGIN } from './config';
 import { startClient, stopClient, restartClient } from './client';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -13,6 +13,21 @@ const configuredFolders = new Set<string>();
 
 function log(msg: string): void {
   outputChannel.appendLine(`[${new Date().toISOString()}] ${msg}`);
+}
+
+/**
+ * Collect extra flags from VS Code settings for a workspace folder.
+ */
+function getExtraFlags(folderPath: string): ExtraFlags {
+  const config = vscode.workspace.getConfiguration('metal-lsp');
+  const includePaths = config.get<string[]>('includePaths', []);
+  const compileFlags = config.get<string[]>('compileFlags', []);
+
+  return {
+    workspaceRoot: folderPath,
+    includePaths,
+    compileFlags,
+  };
 }
 
 /**
@@ -30,7 +45,8 @@ async function configureFolder(
   }
 
   const folderPath = folder.uri.fsPath;
-  const result = await updateClangdConfig(folderPath, sdkInfo);
+  const extra = getExtraFlags(folderPath);
+  const result = await updateClangdConfig(folderPath, sdkInfo, extra);
   configuredFolders.add(folderPath);
 
   switch (result) {
@@ -137,8 +153,17 @@ function registerCommands(context: vscode.ExtensionContext): void {
       }
       outputChannel.appendLine(`Configured folders: ${configuredFolders.size > 0 ? [...configuredFolders].join(', ') : 'none'}`);
 
-      const compileDiag = vscode.workspace.getConfiguration('metal-lsp').get<string>('compileDiagnostics', 'off');
+      const config = vscode.workspace.getConfiguration('metal-lsp');
+      const compileDiag = config.get<string>('compileDiagnostics', 'off');
       outputChannel.appendLine(`Compile diagnostics: ${compileDiag}`);
+      const includePaths = config.get<string[]>('includePaths', []);
+      if (includePaths.length > 0) {
+        outputChannel.appendLine(`Include paths: ${includePaths.join(', ')}`);
+      }
+      const compileFlags = config.get<string[]>('compileFlags', []);
+      if (compileFlags.length > 0) {
+        outputChannel.appendLine(`Compile flags: ${compileFlags.join(' ')}`);
+      }
       outputChannel.appendLine('------------------------');
     })
   );
@@ -223,6 +248,21 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // 7. Watch .clangd files for external modifications
   watchClangdFiles(context);
+
+  // 8. Re-generate .clangd when include paths or compile flags change
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async (e) => {
+      if (
+        e.affectsConfiguration('metal-lsp.includePaths') ||
+        e.affectsConfiguration('metal-lsp.compileFlags')
+      ) {
+        log('Include paths or compile flags changed — regenerating .clangd');
+        configuredFolders.clear();
+        await configureAllFolders(cachedSdkInfo!);
+        await restartClient(outputChannel);
+      }
+    })
+  );
 
   log('Metal LSP extension activated');
 }

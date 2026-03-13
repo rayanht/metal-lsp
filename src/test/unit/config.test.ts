@@ -79,4 +79,48 @@ suite('Config Generator', () => {
 
     assert.strictEqual(hasUserMetalConfig(content), true);
   });
+
+  test('includes workspace root as -I when provided', () => {
+    const block = generateMetalBlock(stubSdkInfo, {
+      workspaceRoot: '/my/project',
+    });
+    assert.ok(block.includes('- -I'));
+    assert.ok(block.includes('- /my/project'));
+  });
+
+  test('defaults workspace root to . when not provided', () => {
+    const block = generateMetalBlock(stubSdkInfo);
+    assert.ok(block.includes('- -I'));
+    assert.ok(block.includes('- .'));
+  });
+
+  test('includes extra includePaths as -isystem', () => {
+    const block = generateMetalBlock(stubSdkInfo, {
+      workspaceRoot: '/proj',
+      includePaths: ['/extra/headers', '/vendor/lib'],
+    });
+    // Should have the SDK -isystem plus two extra -isystem entries
+    const isystemMatches = block.match(/- -isystem/g);
+    assert.strictEqual(isystemMatches?.length, 3); // 1 SDK + 2 extra
+    assert.ok(block.includes('- /extra/headers'));
+    assert.ok(block.includes('- /vendor/lib'));
+  });
+
+  test('includes extra compileFlags', () => {
+    const block = generateMetalBlock(stubSdkInfo, {
+      workspaceRoot: '/proj',
+      compileFlags: ['-DDEBUG=1', '-Werror'],
+    });
+    assert.ok(block.includes('- -DDEBUG=1'));
+    assert.ok(block.includes('- -Werror'));
+  });
+
+  test('-I workspace root comes after -isystem SDK headers', () => {
+    const block = generateMetalBlock(stubSdkInfo, {
+      workspaceRoot: '/proj',
+    });
+    const isystemIdx = block.indexOf(`- ${stubSdkInfo.headersPath}`);
+    const dashIIdx = block.indexOf('- -I');
+    assert.ok(isystemIdx < dashIIdx, '-isystem SDK should come before -I workspace root');
+  });
 });
